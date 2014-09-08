@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: Misoco
+Description: Mixed Integer Second Order Cone Optimization Solver
+URL: https://coral.ie.lehigh.edu/~aykut
+Version: "trunk"
+Libs: -L${libdir} -lMisoco
+Cflags: -I${includedir}
+Requires: -lCola -lOsiconic -lCgl

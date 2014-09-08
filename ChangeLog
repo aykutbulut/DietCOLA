@@ -1,0 +1,12 @@
+Uses Conic extension of COIN-OR's OSI solver.
+
+Does not depend IPopt or gsl (gnu-scientific library).
+
+Uses its own procedures to solve separation problem.
+
+Can handle problems that are unbounded without conic constraints. Generates a
+	supporting hyperplane in such case. For this solves an optimization
+	problem. It is fast.
+
+
+

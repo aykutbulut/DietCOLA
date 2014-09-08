@@ -1,0 +1,11 @@
+DietCOLA (Discrete COLA) solves Mixed Integer Second Order Cone Optimization
+(MISOCO) problems.
+
+This code is developed by modifying COIN-OR's ALPS library example Abc (A
+Branch and Cut) solver, which solves Mixed Integer Linear Optimization
+problems. Basicly I replaced linear solver with COLA. This transition is
+easy since COLA implements conic extension of OSI. This extended interface
+is called Conic OSI and can be found at
+https://github.com/aykutbulut/OSI-CONIC
+
+DietCOLA is similar in design to Goez's MISOCO solver Iclops.

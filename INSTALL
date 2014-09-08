@@ -1,0 +1,13 @@
+Installation Instructions
+*************************
+
+You should make sure that the following libraries can be accessed through
+pkg-config: cola, osiconic, alps, cgl.
+Then following commands will be enough to install.
+
+../configure
+make
+make install
+
+configure installs to current directory by default. You can install a specific
+location using configure option --prefix

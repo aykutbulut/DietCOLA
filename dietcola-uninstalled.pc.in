@@ -1,0 +1,12 @@
+prefix=@prefix@
+libdir=@ABSBUILDDIR@/src
+includedir=@abs_source_dir@/src
+
+Name: Misoco
+Description: Mixed Integer Second Order Cone Optimization Solver
+URL: https://coral.ie.lehigh.edu/~aykut
+Version: @PACKAGE_VERSION@
+Requires: <dependencies>
+Libs: -L${libdir} -lDietcola @MISOCOLIB_PCLIBS@
+Cflags: -I${includedir}
+Requires: @MISOCOLIB_PCREQUIRES@
