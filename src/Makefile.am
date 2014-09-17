@@ -23,6 +23,7 @@ libDietcola_la_SOURCES=\
 
 libDietcola_la_LIBADD=\
 	$(COLA_LIBS)\
+	$(OSIMOSEK_LIBS)\
 	$(ALPS_LIBS)\
 	$(CGL_LIBS)\
 	$(LIBS)
@@ -33,6 +34,7 @@ dietcola_SOURCES=DcMain.cpp
 
 dietcola_LDADD=libDietcola.la\
 	$(COLA_LIBS)\
+	$(OSIMOSEK_LIBS)\
 	$(OSICONIC_LIBS)\
 	$(ALPS_LIBS)\
 	$(CGL_LIBS)\
@@ -41,6 +43,7 @@ dietcola_LDADD=libDietcola.la\
 AM_CPPFLAGS=\
 	-I../../include\
 	$(COLA_CFLAGS)\
+	$(OSIMOSEK_CFLAGS)\
 	$(OSICONIC_CFLAGS)\
 	$(ALPS_CFLAGS)\
 	$(CGL_CFLAGS)

@@ -26,6 +26,7 @@ AC_TYPE_SIZE_T
 #AC_CHECK_LIB(library, function, [action-if-found], [action-if-not-found], [other-libraries])
 AC_CHECK_LIB([m], [sqrt])
 PKG_CHECK_MODULES([COLA], [cola >= 0.0])
+PKG_CHECK_MODULES([OSIMOSEK], [osimosek >= 0.0])
 PKG_CHECK_MODULES([OSICONIC], [osiconic >= 0.0])
 PKG_CHECK_MODULES([ALPS], [alps >= 1.4.8])
 PKG_CHECK_MODULES([CGL], [cgl >= 0.58.5])
