@@ -41,9 +41,9 @@ int main(int argc, char* argv[])
 
     try{
 	// Declare application parameter, model and knowledge broker
-      OsiConicSolverInterface * solver1 = new ColaModel();
+      OsiConicSolverInterface * solver = new ColaModel();
       //solver1->options()->set_int_option(LOG_LEVEL, 0);
-      DcModel model(*solver1);
+      DcModel model(*solver);
       //solver1.messageHandler()->setLogLevel(0);
 
 #ifdef COIN_HAS_MPI

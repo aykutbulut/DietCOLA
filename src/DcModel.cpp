@@ -27,18 +27,23 @@ DcModel::DcModel() {
 }
 
 DcModel::DcModel(const OsiConicSolverInterface &rhs) {
+  // what happens if rhs does not have data yet?
   init();
   solver_ = rhs.clone(true);
   ourSolver_ = true ;
   continuousSolver_ = 0;
-  int numberColumns = solver_->getNumCols();
+  // Clp does not initialize number of columns to 0, and this value
+  // we read here is junk if rhs is an empty OsiClpSolverInterface object.
+  //int numberColumns = solver_->getNumCols();
+  // thats why we assume rhs is empty and number of columns is 0 for now.
+  int numberColumns = 0;
   int iColumn;
   if (numberColumns) {
     // Space for current solution
     currentSolution_ = new double[numberColumns];
     for (iColumn = 0; iColumn < numberColumns; ++iColumn) {
       if( solver_->isInteger(iColumn))
-	numberIntegers_++;
+  	numberIntegers_++;
     }
   } else {
     // empty model
@@ -49,7 +54,7 @@ DcModel::DcModel(const OsiConicSolverInterface &rhs) {
     numberIntegers_=0;
     for (iColumn=0;iColumn<numberColumns;iColumn++) {
       if( solver_->isInteger(iColumn))
-	integerVariable_[numberIntegers_++]=iColumn;
+  	integerVariable_[numberIntegers_++]=iColumn;
     }
   } else {
     integerVariable_ = NULL;
