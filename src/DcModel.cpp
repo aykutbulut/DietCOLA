@@ -1132,3 +1132,33 @@ bool DcModel::fathomAllNodes() {
     return false;
   }
 }
+
+/** apply cuts **/
+OsiSolverInterface::ApplyCutsReturnCode DcModel::applyCuts(OsiCuts cuts) {
+  int numberRows = solver_->getNumRows();
+  OsiSolverInterface::ApplyCutsReturnCode rc = solver_->applyCuts(cuts);
+  solver_->resolve();
+  // Take off slack cuts
+  int numberRowsNow = solver_->getNumRows();
+  int * del = new int [numberRowsNow-numberRows];
+  const CoinWarmStartBasis* basis = dynamic_cast<const CoinWarmStartBasis*>(solver_->getWarmStart());
+  assert (basis);
+  int nDelete=0;
+  for (int i=numberRows;i<numberRowsNow;i++) {
+    CoinWarmStartBasis::Status status = basis->getArtifStatus(i);
+    if (status == CoinWarmStartBasis::basic)
+      del[nDelete++] = i;
+  }
+  delete basis;
+  if (nDelete) {
+    solver_->deleteRows(nDelete,del);
+    // should take zero iterations
+    solver_->resolve();
+    std::cout << nDelete << " rows deleted as basic - resolve took "
+	      << solver_->getIterationCount() <<" iterations"
+	      << std::endl;
+  }
+  delete[] del;
+
+  return rc;
+}

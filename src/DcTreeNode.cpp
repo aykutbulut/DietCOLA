@@ -25,6 +25,14 @@
 #include "DcTreeNode.hpp"
 #include "DcSolution.hpp"
 
+// CGL headers
+#include <CglKnapsackCover.hpp>
+#include <CglSimpleRounding.hpp>
+#include <CglGMI.hpp>
+#include <CglGomory.hpp>
+#include <CglMixedIntegerRounding.hpp>
+#include <CglMixedIntegerRounding2.hpp>
+
 //#############################################################################
 
 /// Infeasibility - large is 0.5
@@ -79,6 +87,12 @@ DcTreeNode::process(bool isRoot, bool rampUp)
     AlpsProcessType myType = getKnowledgeBroker()->getProcType();
 
     DcModel *model=dynamic_cast<DcModel *>(getKnowledgeBroker()->getModel());
+
+
+    // try MILP cuts
+    if (isRoot)
+      addMILPCuts();
+    // end of try MILP cuts
 
     cutDuringRampup = true;
 
@@ -1109,3 +1123,84 @@ int DcTreeNode::chooseBranch(DcModel *model, bool& strongFound)
 }
 #endif
 
+void DcTreeNode::addMILPCuts() {
+  // bool betterSolution = false;
+  // double bestValue = getKnowledgeBroker()->getIncumbentValue();
+  // double parentObjValue = getObjValue();
+  // double primalTolerance = 1.0e-7;
+  // bool cutDuringRampup;
+  // AlpsProcessType myType = getKnowledgeBroker()->getProcType();
+  DcModel *model=dynamic_cast<DcModel *>(getKnowledgeBroker()->getModel());
+  OsiConicSolverInterface * si = model->solver();
+
+  double orig_value = si->getObjValue();
+  CglKnapsackCover cg1;
+  CglSimpleRounding cg2;
+  CglGMI cg3;
+  CglGomory cg4;
+  CglMixedIntegerRounding cg5;
+  CglMixedIntegerRounding2 cg6;
+  bool equalObj;
+  CoinRelFltEq eq(0.0001);
+  OsiSolverInterface::ApplyCutsReturnCode acRc;
+  double obj;
+  int totalNumberApplied = 0;
+  do {
+    // Get current solution value
+    obj = si->getObjValue();
+    // Generate and apply cuts
+    OsiCuts milp_cuts;
+    OsiSolverInterface * ssi = dynamic_cast<OsiSolverInterface*>(si);
+    cg1.generateCuts(*ssi,milp_cuts);
+    cg2.generateCuts(*ssi,milp_cuts);
+    cg3.generateCuts(*ssi,milp_cuts);
+    cg4.generateCuts(*ssi,milp_cuts);
+    cg5.generateCuts(*ssi,milp_cuts);
+    cg6.generateCuts(*ssi,milp_cuts);
+    //cg7.generateCuts(*si,cuts);
+    acRc = model->applyCuts(milp_cuts);
+    // Print applyCuts return code
+    std::cout << std::endl << std::endl;
+    std::cout << milp_cuts.sizeCuts() <<" cuts were generated" << std::endl;
+    std::cout <<"  " <<acRc.getNumInconsistent() <<" were inconsistent" <<std::endl;
+    std::cout <<"  " <<acRc.getNumInconsistentWrtIntegerModel()
+	      <<" were inconsistent for this problem" <<std::endl;
+    std::cout <<"  " <<acRc.getNumInfeasible() <<" were infeasible" <<std::endl;
+    std::cout <<"  " <<acRc.getNumIneffective() <<" were ineffective" <<std::endl;
+    std::cout <<"  " <<acRc.getNumApplied() <<" were applied" <<std::endl;
+    std::cout <<std::endl <<std::endl;
+    // Increment the counter of total cuts applied
+    totalNumberApplied += acRc.getNumApplied();
+    // If no cuts were applied, then done
+    if (acRc.getNumApplied()==0)
+      break;
+    // Resolve
+    //si->resolve();
+    std::cout <<std::endl;
+    std::cout <<"After applying cuts, objective value changed from "
+	      << obj << " to " << si->getObjValue() << std::endl << std::endl;
+    // -----------------------------------------------
+    // Set Boolean flag to true if new objective is
+    // almost equal to prior value.
+    //
+    // The test is:
+    // abs(oldObj-newObj) <= 0.0001*(CoinMax(abs(oldObj),abs(newObj))+1.);
+    // see CoinRelFloatEqual.h
+    // -----------------------------------------------
+    equalObj = eq(si->getObjValue(), obj);
+  } while (!equalObj);
+  // Print total number of cuts applied,
+  // and total improvement in the lp objective value
+  std::cout <<std::endl <<std::endl;
+  std::cout << "----------------------------------------------------------"
+	    <<std::endl;
+  std::cout << "Cut generation phase completed:" <<std::endl;
+  std::cout << "   " << totalNumberApplied << " cuts were applied in total,"
+	    <<std::endl;
+  std::cout << "   changing the lp objective value from " << orig_value
+	    << " to " << si->getObjValue() <<std::endl;
+  std::cout << "----------------------------------------------------------"
+	    <<std::endl;
+  std::cout <<std::endl <<std::endl;
+
+}

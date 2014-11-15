@@ -138,6 +138,8 @@ class DcTreeNode : public AlpsTreeNode {
     ///
     virtual AlpsKnowledge* decode(AlpsEncoded&) const;
 
+  void addMILPCuts();
+
 };
 
 #endif

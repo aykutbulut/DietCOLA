@@ -867,6 +867,9 @@ class DcModel : public AlpsModel {
 
     /** Return true, if all nodes can be fathomed.*/
     virtual bool fathomAllNodes();
+
+  /** apply cuts **/
+  OsiSolverInterface::ApplyCutsReturnCode applyCuts(OsiCuts cuts);
 };
 
 //#############################################################################
