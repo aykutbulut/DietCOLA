@@ -30,6 +30,7 @@ PKG_CHECK_MODULES([OSIMOSEK], [osimosek >= 0.0])
 PKG_CHECK_MODULES([OSICONIC], [osiconic >= 0.0])
 PKG_CHECK_MODULES([ALPS], [alps >= 1.4.8])
 PKG_CHECK_MODULES([CGL], [cgl >= 0.58.5])
+PKG_CHECK_MODULES([CONICCGL], [cglconic >= 0.0])
 
 AC_CONFIG_FILES([Makefile
 	src/Makefile

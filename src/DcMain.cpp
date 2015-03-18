@@ -25,13 +25,14 @@
 #else
 #  include "AlpsKnowledgeBrokerSerial.h"
 #endif
-
+// DietCOLA headers
 #include "DcHeuristic.hpp"
 #include "DcSolution.hpp"
 #include "DcTreeNode.hpp"
 #include "DcModel.hpp"
-
-#include <ConicConstraints.hpp>
+// COLA headers
+#include <Options.hpp>
+// STL headers
 #include <numeric>
 #include <iomanip>
 //#############################################################################
@@ -41,8 +42,11 @@ int main(int argc, char* argv[]) {
   try {
     // Create COLA solver
     OsiConicSolverInterface * solver = new ColaModel();
+    // set precision to low
+    ColaModel * m = dynamic_cast<ColaModel*>(solver);
+    m->options()->set_dbl_option(TOL, 1e-1);
     // Create Mosek solver
-    //OsiConicSolverInterface * solver = new OsiMosekSolverInterface();
+    // OsiConicSolverInterface * solver = new OsiMosekSolverInterface();
     // create DietCola model
     DcModel model(*solver);
 

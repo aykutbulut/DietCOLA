@@ -26,6 +26,7 @@ libDietcola_la_LIBADD=\
 	$(OSIMOSEK_LIBS)\
 	$(ALPS_LIBS)\
 	$(CGL_LIBS)\
+	$(CONICCGL_LIBS)\
 	$(LIBS)
 
 bin_PROGRAMS=dietcola
@@ -38,6 +39,7 @@ dietcola_LDADD=libDietcola.la\
 	$(OSICONIC_LIBS)\
 	$(ALPS_LIBS)\
 	$(CGL_LIBS)\
+	$(CONICCGL_LIBS)\
 	$(LIBS)
 
 AM_CPPFLAGS=\
@@ -46,7 +48,8 @@ AM_CPPFLAGS=\
 	$(OSIMOSEK_CFLAGS)\
 	$(OSICONIC_CFLAGS)\
 	$(ALPS_CFLAGS)\
-	$(CGL_CFLAGS)
+	$(CGL_CFLAGS)\
+	$(CONICCGL_CFLAGS)
 
 # header files to be installed to $(includedir)
 include_HEADERS=DcMessage.hpp\

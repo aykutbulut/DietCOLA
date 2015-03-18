@@ -7,6 +7,7 @@
 #include <iostream>
 #include <utility>
 #include <cmath>
+#include <iomanip>
 
 #include <CoinUtility.hpp>
 #include <OsiConicSolverInterface.hpp>
@@ -32,6 +33,9 @@
 #include <CglGomory.hpp>
 #include <CglMixedIntegerRounding.hpp>
 #include <CglMixedIntegerRounding2.hpp>
+
+// Conic Cgl header
+#include <CglConicMIR.hpp>
 
 //#############################################################################
 
@@ -90,9 +94,33 @@ DcTreeNode::process(bool isRoot, bool rampUp)
 
 
     // try MILP cuts
-    if (isRoot)
-      addMILPCuts();
+    // if (isRoot)
+    //   addMILPCuts();
     // end of try MILP cuts
+
+    // add MIR cuts
+    // if (isRoot) {
+    //   CglConicMIR cg;
+    //   OsiConicSolverInterface * si = model->solver();
+    //   si->initialSolve();
+    //   double orig_obj_val = si->getObjValue();
+    //   cg.generateAndAddCuts(*si);
+    //   si->resolve();
+    //   double new_obj_val = si->getObjValue();
+    //   int num_cuts = cg.getNumCutsAdded();
+    //   std::cout << num_cuts << " MIR cuts added." << std::endl;
+    //   std::cout << "Objective value is improved from " << std::setprecision(15)
+    //             << orig_obj_val << " to " << new_obj_val << std::endl;
+    // }
+    // end of MIR cuts
+
+    // clean redundant cuts
+    // this will create a bug if solver is mosek
+    // if (isRoot) {
+    //   ColaModel * s = dynamic_cast<ColaModel*>(model->solver());
+    //   s->clean_redundant_constraints();
+    // }
+    // end of redundunt cut cleaning
 
     cutDuringRampup = true;
 
@@ -1123,6 +1151,7 @@ int DcTreeNode::chooseBranch(DcModel *model, bool& strongFound)
 }
 #endif
 
+// todo(aykut) remove unnecessary cuts once in a while.
 void DcTreeNode::addMILPCuts() {
   // bool betterSolution = false;
   // double bestValue = getKnowledgeBroker()->getIncumbentValue();

@@ -98,7 +98,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libDietcola_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_libDietcola_la_OBJECTS = DcBranchActual.lo DcBranchBase.lo \
 	DcCutGenerator.lo DcHeuristic.lo DcMessage.lo DcModel.lo \
 	DcParams.lo DcSolution.lo DcTreeNode.lo
@@ -109,7 +110,7 @@ dietcola_OBJECTS = $(am_dietcola_OBJECTS)
 dietcola_DEPENDENCIES = libDietcola.la $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -159,6 +160,8 @@ CGL_CFLAGS = @CGL_CFLAGS@
 CGL_LIBS = @CGL_LIBS@
 COLA_CFLAGS = @COLA_CFLAGS@
 COLA_LIBS = @COLA_LIBS@
+CONICCGL_CFLAGS = @CONICCGL_CFLAGS@
+CONICCGL_LIBS = @CONICCGL_LIBS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -301,6 +304,7 @@ libDietcola_la_LIBADD = \
 	$(OSIMOSEK_LIBS)\
 	$(ALPS_LIBS)\
 	$(CGL_LIBS)\
+	$(CONICCGL_LIBS)\
 	$(LIBS)
 
 dietcola_SOURCES = DcMain.cpp
@@ -310,6 +314,7 @@ dietcola_LDADD = libDietcola.la\
 	$(OSICONIC_LIBS)\
 	$(ALPS_LIBS)\
 	$(CGL_LIBS)\
+	$(CONICCGL_LIBS)\
 	$(LIBS)
 
 AM_CPPFLAGS = \
@@ -318,7 +323,8 @@ AM_CPPFLAGS = \
 	$(OSIMOSEK_CFLAGS)\
 	$(OSICONIC_CFLAGS)\
 	$(ALPS_CFLAGS)\
-	$(CGL_CFLAGS)
+	$(CGL_CFLAGS)\
+	$(CONICCGL_CFLAGS)
 
 
 # header files to be installed to $(includedir)
